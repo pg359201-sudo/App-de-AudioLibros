@@ -67,52 +67,38 @@ const App: React.FC = () => {
     const [isProcessed, setIsProcessed] = useState<boolean>(false);
     const [inputMode, setInputMode] = useState<'paste' | 'upload'>('paste');
     const [isPdfJsReady, setIsPdfJsReady] = useState(false);
-    const [isLameJsReady, setIsLameJsReady] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // Dynamic script loader for external libraries
     useEffect(() => {
-        const loadScript = (src: string, onReady: () => void, onError: () => void) => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-            script.onload = onReady;
-            script.onerror = onError;
-            document.body.appendChild(script);
-            return () => { document.body.removeChild(script); };
+        if (window.pdfjsLib) {
+            setIsPdfJsReady(true);
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+        script.async = true;
+
+        script.onload = () => {
+            if (window.pdfjsLib) {
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
+                setIsPdfJsReady(true);
+            } else {
+                 setError("La librería PDF se cargó, pero no se inicializó correctamente.");
+            }
         };
 
-        // Load PDF.js
-        if (!window.pdfjsLib) {
-            loadScript(
-                'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
-                () => {
-                    if (window.pdfjsLib) {
-                        window.pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
-                        setIsPdfJsReady(true);
-                    } else {
-                        setError("La librería PDF se cargó, pero no se inicializó correctamente.");
-                    }
-                },
-                () => {
-                    setError("No se pudo cargar la librería para leer PDFs. Revisa tu conexión a internet.");
-                }
-            );
-        } else {
-            setIsPdfJsReady(true);
-        }
+        script.onerror = () => {
+            console.error("Falló la carga del script de pdf.js.");
+            setError("No se pudo cargar la librería para leer PDFs. Revisa tu conexión a internet y refresca la página.");
+        };
 
-        // Load LameJS
-        if (!window.lamejs) {
-            loadScript(
-                'https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js',
-                () => setIsLameJsReady(true),
-                () => setError("No se pudo cargar la librería de codificación de audio.")
-            );
-        } else {
-            setIsLameJsReady(true);
-        }
+        document.body.appendChild(script);
+
+        return () => {
+             document.body.removeChild(script);
+        };
     }, []);
 
     const handleAnalysis = useCallback(async (text: string) => {
@@ -247,8 +233,8 @@ const App: React.FC = () => {
             return;
         }
 
-        if (!isLameJsReady) {
-            setError("La librería de codificación de audio no está lista. Por favor, inténtalo de nuevo en un momento.");
+        if (!window.lamejs) {
+            setError("La librería de codificación de audio no se ha cargado. Por favor, revisa tu conexión a internet y refresca la página.");
             return;
         }
 
