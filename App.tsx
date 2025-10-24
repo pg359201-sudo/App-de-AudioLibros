@@ -29,7 +29,8 @@ type AnalysisResults = {
 const createMp3Blob = (pcmData: ArrayBuffer, sampleRate: number, numChannels: number): Blob => {
     const pcm = new Int16Array(pcmData);
     const mp3encoder = new window.lamejs.Mp3Encoder(numChannels, sampleRate, 128); // 128 kbps
-    const mp3Data: Int8Array[] = [];
+    // Fix: Use BlobPart[] type to match Blob constructor requirements.
+    const mp3Data: BlobPart[] = [];
     const sampleBlockSize = 1152;
 
     for (let i = 0; i < pcm.length; i += sampleBlockSize) {

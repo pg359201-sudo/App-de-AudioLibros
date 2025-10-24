@@ -1,7 +1,6 @@
 import { GoogleGenAI, Modality, GenerateContentResponse } from "@google/genai";
 import { ResponseMode } from '../types';
 
-// Fix: Use `process.env.API_KEY` as per Gemini API guidelines. This resolves the TypeScript error.
 if (!process.env.API_KEY) {
     throw new Error("API_KEY environment variable is not set.");
 }
@@ -28,6 +27,7 @@ export const generateTextAnalysis = async (text: string, mode: ResponseMode): Pr
             model: 'gemini-2.5-flash',
             contents: `${prompt}\n\n--- INICIO DEL TEXTO ---\n\n${text}\n\n--- FIN DEL TEXTO ---`,
         });
+        // Fix: According to Gemini API guidelines, response.text directly provides the string output.
         return response.text;
     } catch (error) {
         console.error(`Error during text analysis for mode ${mode}:`, error);
@@ -42,6 +42,7 @@ export const translateText = async (text: string): Promise<string> => {
             model: 'gemini-2.5-flash',
             contents: prompt,
         });
+        // Fix: According to Gemini API guidelines, response.text directly provides the string output.
         return response.text;
     } catch (error) {
         console.error("Error during translation:", error);
