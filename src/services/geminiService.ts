@@ -27,8 +27,15 @@ export const generateTextAnalysis = async (text: string, mode: ResponseMode): Pr
             model: 'gemini-2.5-flash',
             contents: `${prompt}\n\n--- INICIO DEL TEXTO ---\n\n${text}\n\n--- FIN DEL TEXTO ---`,
         });
-        // Fix: According to Gemini API guidelines, response.text directly provides the string output.
-        return response.text;
+        
+        const resultText = response.text;
+        // FIX: The type of `response.text` is `string | undefined`.
+        // This check ensures we only return a string, satisfying TypeScript's strict mode.
+        if (typeof resultText !== 'string') {
+            throw new Error(`La respuesta de la API para el modo "${mode}" no contiene texto.`);
+        }
+        return resultText;
+
     } catch (error) {
         console.error(`Error during text analysis for mode ${mode}:`, error);
         throw error;
@@ -42,8 +49,15 @@ export const translateText = async (text: string): Promise<string> => {
             model: 'gemini-2.5-flash',
             contents: prompt,
         });
-        // Fix: According to Gemini API guidelines, response.text directly provides the string output.
-        return response.text;
+        
+        const resultText = response.text;
+        // FIX: The type of `response.text` is `string | undefined`.
+        // This check ensures we only return a string, satisfying TypeScript's strict mode.
+        if (typeof resultText !== 'string') {
+            throw new Error("La respuesta de la API para la traducción no contiene texto.");
+        }
+        return resultText;
+
     } catch (error) {
         console.error("Error during translation:", error);
         throw error;
@@ -82,8 +96,6 @@ export const generateSpeech = async (text: string, language: 'es' | 'en'): Promi
 
         const voiceName = language === 'es' ? 'Kore' : 'Zephyr';
 
-        // A more robust prompt to ensure the model focuses solely on the TTS task.
-        // This "role-prompting" is more reliable than simply sending the text directly.
         const instruction = language === 'es'
             ? 'Tu única tarea es leer en voz alta el siguiente texto de forma clara y natural. No añadas introducciones ni comentarios. Solo lee el texto proporcionado. Texto a leer:'
             : 'Your only task is to read the following text aloud clearly and naturally. Do not add any introductions or comments. Just read the provided text. Text to read:';
