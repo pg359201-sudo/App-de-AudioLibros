@@ -468,7 +468,7 @@ const App: React.FC = () => {
         <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 sm:p-6 lg:p-8">
             <div className="w-full max-w-3xl mx-auto">
                 <header className="text-center mb-8">
-                    <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Analizador Inteligente de Documentos</h1>
+                    <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Crea tus propios Audiolibros 📚🎧</h1>
                     <p className="mt-2 text-slate-600">Sube un documento, obtén múltiples análisis y escúchalos cuando quieras.</p>
                 </header>
 
