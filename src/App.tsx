@@ -436,7 +436,7 @@ const App: React.FC = () => {
             onClick={() => setInputMode(mode)}
             className={`px-4 py-2 text-sm font-medium rounded-t-lg border-b-2 transition-colors ${
                 inputMode === mode
-                    ? 'border-indigo-500 text-indigo-600'
+                    ? 'border-emerald-500 text-emerald-600'
                     : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
             }`}
         >
@@ -449,7 +449,7 @@ const App: React.FC = () => {
             onClick={() => { setActiveTab(mode); setAudioSrc(null); setAudioBlob(null); setWarning(null); setDisplayedLanguage('es'); }}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 activeTab === mode
-                    ? 'bg-indigo-100 text-indigo-700'
+                    ? 'bg-emerald-100 text-emerald-700'
                     : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
             }`}
         >
@@ -486,14 +486,14 @@ const App: React.FC = () => {
                                     value={documentText}
                                     onChange={(e) => { setDocumentText(e.target.value); setFileName(''); }}
                                     placeholder="Escribe o pega aquí un texto largo..."
-                                    className="w-full h-64 p-4 border border-slate-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                                    className="w-full h-64 p-4 border border-slate-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500 transition duration-150"
                                     disabled={totalLoading}
                                 />
                             ) : (
                                 <div className="flex flex-col items-center justify-center w-full">
                                     {!isPdfJsReady ? (
                                         <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-slate-300 border-dashed rounded-lg bg-slate-50">
-                                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+                                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
                                             <p className="mt-2 text-sm text-slate-500">Inicializando lector de PDF...</p>
                                         </div>
                                     ) : (
@@ -517,7 +517,7 @@ const App: React.FC = () => {
                                 <button
                                     onClick={() => handleAnalysis(documentText)}
                                     disabled={totalLoading || !documentText.trim()}
-                                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed"
+                                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:bg-emerald-300 disabled:cursor-not-allowed"
                                 >
                                     {totalLoading ? <SpinnerIcon /> : <UploadIcon />}
                                     <span className="ml-2">{loadingText}</span>
@@ -527,7 +527,7 @@ const App: React.FC = () => {
                     ) : (
                         <div>
                             <div className="flex justify-end mb-6">
-                                <button onClick={handleReset} className="text-sm text-indigo-600 hover:text-indigo-800 font-medium transition-colors">
+                                <button onClick={handleReset} className="text-sm text-emerald-600 hover:text-emerald-800 font-medium transition-colors">
                                     Analizar otro documento
                                 </button>
                             </div>
@@ -578,7 +578,7 @@ const App: React.FC = () => {
                                         <button 
                                             onClick={() => handleGenerateAudio(activeTab, 'es')}
                                             disabled={isGeneratingAudio || !analysisResults?.[activeTab]}
-                                            className="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
+                                            className="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:bg-emerald-300"
                                         >
                                             {isGeneratingAudio && <SpinnerIcon />}
                                             <span className="mx-1">{isGeneratingAudio ? (generationProgress || 'Generando...') : 'Audio en Español'}</span>
@@ -587,7 +587,7 @@ const App: React.FC = () => {
                                             <button 
                                                 onClick={() => handleGenerateAudio(activeTab, 'en')}
                                                 disabled={isGeneratingAudio || !isEnglishTranslated}
-                                                className="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:bg-sky-300 disabled:cursor-not-allowed"
+                                                className="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:bg-teal-300 disabled:cursor-not-allowed"
                                             >
                                                 {isGeneratingAudio && <SpinnerIcon />}
                                                 <span className="mx-1">{isGeneratingAudio ? (generationProgress || 'Generando...') : 'Audio en Inglés'}</span>
